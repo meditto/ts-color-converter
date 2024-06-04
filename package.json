@@ -11,7 +11,8 @@
   "types": "./dist/types/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "npm run test  && tsc --project tsconfig.esm.json & tsc --project tsconfig.cjs.json"
+    "build": "npm run test  && tsc --project tsconfig.esm.json & tsc --project tsconfig.cjs.json",
+    "publish": "npm run build && npm publish"
   },
   "keywords": [],
   "author": "Med Djelaili",
