@@ -1,6 +1,6 @@
 {
   "name": "ts-color-converter",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "main": "./dist/esm/index.js",
   "exports": {
@@ -11,7 +11,7 @@
   "types": "./dist/types/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "npm run test  && tsc --project tsconfig.esm.json & tsc --project tsconfig.cjs.json",
+    "build": "npm run test  && rm -r dist && tsc --project tsconfig.esm.json & tsc --project tsconfig.cjs.json",
     "publish": "npm run build && npm publish"
   },
   "keywords": [],
