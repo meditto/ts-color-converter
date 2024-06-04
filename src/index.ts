@@ -26,7 +26,7 @@ interface HSLA extends HSL {
 }
 export type ColorType = 'HEX' | 'RGB' | 'RGBA' | 'HSB' | 'HSBA' | 'HSL' | 'HSLA';
 
-export default class CssColorConverter {
+export default class TsColorConverter {
     private rgbaColor?: RGBA;
     public to(type: ColorType, returnAsString = true) {
         if (!this.rgbaColor) {

@@ -1,4 +1,4 @@
-import CssColorConverter from '../index';
+import TsColorConverter from '../index';
 const colors = [
     {
         HEX: '#B8860B',
@@ -65,7 +65,7 @@ const colors = [
     }
 ];
 const types = ['HEX', 'RGB', 'RGBA', 'HSL', 'HSLA'];
-const converter = new CssColorConverter();
+const converter = new TsColorConverter();
 // jest test
 describe('CssColorConverter', () => {
     types.forEach((type) => {

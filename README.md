@@ -1,7 +1,7 @@
 
-# CssColorConverter
+# TsColorConverter
 
-CssColorConverter is a TypeScript library for converting between various color formats (HEX, RGB, RGBA, HSL, HSLA, HSB, HSBA). It provides a simple and consistent API for color manipulation and conversion.
+TsColorConverter is a TypeScript library for converting between various color formats (HEX, RGB, RGBA, HSL, HSLA, HSB, HSBA). It provides a simple and consistent API for color manipulation and conversion.
 
 ## Features
 
@@ -14,27 +14,27 @@ CssColorConverter is a TypeScript library for converting between various color f
 To install the library, use npm or yarn:
 
 ```bash
-npm install css-color-converter
+npm install ts-color-converter
 ```
 
 or
 
 ```bash
-yarn add css-color-converter
+yarn add ts-color-converter
 ```
 
 ## Usage
 
-First, import the CssColorConverter class from the library:
+First, import the TsColorConverter class from the library:
 
 ```typescript
-import CssColorConverter from 'css-color-converter';
+import TsColorConverter from 'ts-color-converter';
 ```
 
 ## Example
 
 ```typescript
-const converter = new CssColorConverter();
+const converter = new TsColorConverter();
 
 // Convert HEX to RGB
 const rgb = converter.hex('#B8860B').to('RGB');
@@ -57,31 +57,31 @@ console.log(hslObject); //  { h: 42.7, s: 88.7, l: 38.2 }
 
 ### Methods
 
-- **hex** (color: string): CssColorConverter
+- **hex** (color: string): TsColorConverter
 
   - Set the current color in HEX format.
 
-- **rgb** (color: string | RGB): CssColorConverter
+- **rgb** (color: string | RGB): TsColorConverter
 
   - Set the current color in RGB format.
 
-- **rgba** (color: string | RGBA): CssColorConverter
+- **rgba** (color: string | RGBA): TsColorConverter
 
   - Set the current color in RGBA format.
 
-- **hsl** (color: string | HSL): CssColorConverter
+- **hsl** (color: string | HSL): TsColorConverter
 
   - Set the current color in HSL format.
 
-- **hsla** (color: string | HSLA): CssColorConverter
+- **hsla** (color: string | HSLA): TsColorConverter
 
   - Set the current color in HSLA format.
 
-- **hsb** (color: string | HSB): CssColorConverter
+- **hsb** (color: string | HSB): TsColorConverter
 
   - Set the current color in HSB format.
 
-- **hsba** (color: string | HSBA): CssColorConverter
+- **hsba** (color: string | HSBA): TsColorConverter
 
   - Set the current color in HSBA format.
 
