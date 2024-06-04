@@ -21,7 +21,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import Decimal from 'decimal.js';
-var TsColorConverter = /** @class */ (function () {
+var TsColorConverter = (function () {
     function TsColorConverter() {
     }
     TsColorConverter.prototype.to = function (type, returnAsString) {
@@ -48,7 +48,6 @@ var TsColorConverter = /** @class */ (function () {
                 throw new Error('Invalid color type');
         }
     };
-    /* ------ RGB / RGBA ------ */
     TsColorConverter.prototype.rgb = function (rgb) {
         var _this = this;
         if (typeof rgb === 'string') {
@@ -113,7 +112,6 @@ var TsColorConverter = /** @class */ (function () {
         }
         return returnAsString ? "rgb(".concat(r, ", ").concat(g, ", ").concat(b, ")") : { r: r, g: g, b: b };
     };
-    /* ------ HEX ------ */
     TsColorConverter.prototype.hex = function (color) {
         this.rgbaColor = this.hexToRGBA(color);
         return this;
@@ -191,10 +189,8 @@ var TsColorConverter = /** @class */ (function () {
                 .join('');
         }
         hex = '0x' + hex;
-        // @ts-ignore
         return { r: (hex >> 16) & 255, g: (hex >> 8) & 255, b: hex & 255, a: alpha };
     };
-    /* ------ HSLA/HSLA ------ */
     TsColorConverter.prototype.hsb = function (hsb) {
         var _this = this;
         if (typeof hsb === 'string') {
@@ -266,7 +262,6 @@ var TsColorConverter = /** @class */ (function () {
     };
     TsColorConverter.prototype.HSBAtoRGBA = function (hsba) {
         var _this = this;
-        // source https://www.baeldung.com/cs/convert-color-hsl-rgb
         var hue = new Decimal(hsba.h);
         var saturation = new Decimal(hsba.s).div(100);
         var brightness = new Decimal(hsba.b).div(100);
@@ -293,7 +288,6 @@ var TsColorConverter = /** @class */ (function () {
         var _a = range[2].map(function (v) { return v.plus(m).times(255).round().toNumber(); }), r = _a[0], g = _a[1], b = _a[2];
         return { r: r, g: g, b: b, a: hsba.a };
     };
-    // TODO: Refactor to use Decimal.js
     TsColorConverter.prototype.RGBAToHSBA = function (rgba, alpha, returnAsString, hsl) {
         if (hsl === void 0) { hsl = false; }
         var r = new Decimal(rgba.r).div(255);
@@ -380,7 +374,6 @@ var TsColorConverter = /** @class */ (function () {
         var type = Object.keys(value)
             .filter(function (key) { return alpha || key !== 'a'; })
             .join('');
-        // console.log('type', type, value);
         switch (type) {
             case 'rgb':
                 var rgb = value;
@@ -408,3 +401,4 @@ var TsColorConverter = /** @class */ (function () {
     return TsColorConverter;
 }());
 export default TsColorConverter;
+//# sourceMappingURL=index.js.map

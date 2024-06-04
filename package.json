@@ -1,13 +1,17 @@
 {
   "name": "ts-color-converter",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
-  "main": "dist/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/esm/index.js",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js",
+    "default": "./dist/esm/index.js"
+  },
+  "types": "./dist/types/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "npm run test  && tsc && tsc -m ES6 --outDir dist/esm"
+    "build": "npm run test  && tsc --project tsconfig.esm.json & tsc --project tsconfig.cjs.json"
   },
   "keywords": [],
   "author": "Med Djelaili",
