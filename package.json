@@ -1,5 +1,5 @@
 {
-  "name": "css-color-converter",
+  "name": "ts-color-converter",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
