@@ -86,6 +86,15 @@ describe('CssColorConverter', () => {
             });
         });
     });
+    it('can return an object', () => {
+        const color = converter.hex('#ff0000');
+        expect(color.to('RGB', false)).toEqual({ r: 255, g: 0, b: 0 });
+        expect(color.to('RGBA', false)).toEqual({ r: 255, g: 0, b: 0, a: 1 });
+        expect(color.to('HSB', false)).toEqual({ h: 0, s: 100, b: 50 });
+        expect(color.to('HSBA', false)).toEqual({ h: 0, s: 100, b: 50, a: 1 });
+        expect(color.to('HSL', false)).toEqual({ h: 0, s: 100, l: 50 });
+        expect(color.to('HSLA', false)).toEqual({ h: 0, s: 100, l: 50, a: 1 });
+    });
     it('should throw an error when the input is invalid', () => {
         expect(() => converter.rgb('rgb(255,265,0)').to('HEX')).toThrow('Invalid rgb color');
         expect(() => converter.rgb('rgb(255,265,-1)').to('HEX')).toThrow('Invalid rgb color');

@@ -40,11 +40,13 @@ export default class CssColorConverter {
             case 'RGBA':
                 return this.RGBAToRGBA(this.rgbaColor, true, returnAsString);
             case 'HSB':
-            case 'HSL':
                 return this.RGBAToHSBA(this.rgbaColor, false, returnAsString);
             case 'HSBA':
-            case 'HSLA':
                 return this.RGBAToHSBA(this.rgbaColor, true, returnAsString);
+            case 'HSL':
+                return this.RGBAToHSBA(this.rgbaColor, false, returnAsString, true);
+            case 'HSLA':
+                return this.RGBAToHSBA(this.rgbaColor, true, returnAsString, true);
             default:
                 throw new Error('Invalid color type');
         }
@@ -262,7 +264,7 @@ export default class CssColorConverter {
         return { r, g, b, a: hsba.a };
     }
     // TODO: Refactor to use Decimal.js
-    private RGBAToHSBA(rgba: RGBA, alpha: boolean, returnAsString: boolean) {
+    private RGBAToHSBA(rgba: RGBA, alpha: boolean, returnAsString: boolean, hsl: boolean = false) {
         const r = new Decimal(rgba.r).div(255);
         const g = new Decimal(rgba.g).div(255);
         const b = new Decimal(rgba.b).div(255);
@@ -270,11 +272,10 @@ export default class CssColorConverter {
         let min = Decimal.min(r, g, b);
         const luminance = max.plus(min).div(2);
         if (max.equals(min)) {
-            return this.ReturnStringOrObject(
-                { h: 0, s: 0, b: Number(luminance.times(100).toFixed(1)), a: rgba.a },
-                alpha,
-                returnAsString
-            );
+            const value = hsl
+                ? { h: 0, s: 0, l: Number(luminance.times(100).toFixed(1)), a: rgba.a }
+                : { h: 0, s: 0, b: Number(luminance.times(100).toFixed(1)), a: rgba.a };
+            return this.ReturnStringOrObject(value, alpha, returnAsString);
         }
         const d = max.minus(min);
         const saturation = luminance.lte(0.5)
@@ -295,16 +296,20 @@ export default class CssColorConverter {
         if (hue.lessThan(0)) {
             hue = hue.plus(360);
         }
-        return this.ReturnStringOrObject(
-            {
-                h: Number(hue.toFixed(1)),
-                s: Number(saturation.times(100).toFixed(1)),
-                b: Number(luminance.times(100).toFixed(1)),
-                a: rgba.a
-            },
-            alpha,
-            returnAsString
-        );
+        const value = hsl
+            ? {
+                  h: Number(hue.toFixed(1)),
+                  s: Number(saturation.times(100).toFixed(1)),
+                  l: Number(luminance.times(100).toFixed(1)),
+                  a: rgba.a
+              }
+            : {
+                  h: Number(hue.toFixed(1)),
+                  s: Number(saturation.times(100).toFixed(1)),
+                  b: Number(luminance.times(100).toFixed(1)),
+                  a: rgba.a
+              };
+        return this.ReturnStringOrObject(value, alpha, returnAsString);
     }
     private ParseStringColor(type: 'rgb' | 'rgba' | 'hsl' | 'hsla', color: string) {
         const lengths = {
@@ -330,7 +335,11 @@ export default class CssColorConverter {
     private DecimalInRange(value: Decimal, min: number, max: number) {
         return value.gte(min) && value.lte(max);
     }
-    private ReturnStringOrObject(value: HSBA | RGBA, alpha: boolean, returnAsString: boolean) {
+    private ReturnStringOrObject(
+        value: HSBA | RGBA | HSLA,
+        alpha: boolean,
+        returnAsString: boolean
+    ) {
         if (!returnAsString) {
             if (alpha) return value;
             else {
@@ -353,19 +362,18 @@ export default class CssColorConverter {
             case 'hsb':
                 const hsb = value as HSB;
                 return `hsl(${hsb.h}, ${hsb.s}%, ${hsb.b}%)`;
+            case 'hsl':
+                const hsl = value as HSL;
+                return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
             case 'hsba':
                 const hsba = value as HSBA;
                 return `hsla(${hsba.h}, ${hsba.s}%, ${hsba.b}%, ${hsba.a})`;
+            case 'hsla':
+                const hsla = value as HSLA;
+                return `hsla(${hsla.h}, ${hsla.s}%, ${hsla.l}%, ${hsla.a})`;
         }
     }
     private inRange(value: number, min: number, max: number) {
         return value >= min && value <= max;
     }
 }
-
-// const converter = new CssColorConverter();
-// converter.hex('#00FF00').to('RGBA'); //?
-// // converter.hex('#00FF00').to('HSLA'); //?
-// converter.hex('#FF00FF').to('HSLA'); //?
-// // hsl(-60, 100%, 50%)
-// // hsl(300, 100%, 50%)
