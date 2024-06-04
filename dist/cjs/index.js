@@ -21,8 +21,11 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var decimal_js_1 = require("decimal.js");
+var decimal_js_1 = __importDefault(require("decimal.js"));
 var TsColorConverter = (function () {
     function TsColorConverter() {
     }
