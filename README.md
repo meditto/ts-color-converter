@@ -119,6 +119,10 @@ console.log(hslObject); //  { h: 42.7, s: 88.7, l: 38.2 }
 
   - { h: number; s: number; l: number; a: number; }
 
+### Todo
+
+-[] Implement support for LCH colors
+
 ### Running Tests
 
 To run the tests for the library, use the following command:
