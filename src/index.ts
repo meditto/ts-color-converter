@@ -52,7 +52,7 @@ export default class TsColorConverter {
         }
     }
     /* ------ RGB / RGBA ------ */
-    public rgb(rgb: string | RGB): CssColorConverter {
+    public rgb(rgb: string | RGB): TsColorConverter {
         if (typeof rgb === 'string') {
             try {
                 const [r, g, b] = this.ParseStringColor('rgb', rgb);
@@ -74,7 +74,7 @@ export default class TsColorConverter {
         }
         return this;
     }
-    public rgba(rgba: string | RGBA): CssColorConverter {
+    public rgba(rgba: string | RGBA): TsColorConverter {
         if (typeof rgba === 'string') {
             try {
                 const [r, g, b, a] = this.ParseStringColor('rgba', rgba);
@@ -105,7 +105,7 @@ export default class TsColorConverter {
         return returnAsString ? `rgb(${r}, ${g}, ${b})` : { r, g, b };
     }
     /* ------ HEX ------ */
-    public hex(color: string): CssColorConverter {
+    public hex(color: string): TsColorConverter {
         this.rgbaColor = this.hexToRGBA(color);
         return this;
     }
@@ -182,7 +182,7 @@ export default class TsColorConverter {
         return { r: (hex >> 16) & 255, g: (hex >> 8) & 255, b: hex & 255, a: alpha };
     }
     /* ------ HSLA/HSLA ------ */
-    public hsb(hsb: string | HSB): CssColorConverter {
+    public hsb(hsb: string | HSB): TsColorConverter {
         if (typeof hsb === 'string') {
             try {
                 const [h, s, b] = this.ParseStringColor('hsl', hsb);
@@ -203,14 +203,14 @@ export default class TsColorConverter {
         }
         return this;
     }
-    public hsl(hsl: string | HSL): CssColorConverter {
+    public hsl(hsl: string | HSL): TsColorConverter {
         if (typeof hsl === 'string') {
             return this.hsb(hsl);
         }
         const { h, s, l } = hsl;
         return this.hsb({ h, s, b: l });
     }
-    public hsba(hsba: string | HSBA): CssColorConverter {
+    public hsba(hsba: string | HSBA): TsColorConverter {
         if (typeof hsba === 'string') {
             try {
                 const [h, s, b, a] = this.ParseStringColor('hsla', hsba);
@@ -232,7 +232,7 @@ export default class TsColorConverter {
         }
         return this;
     }
-    public hsla(hsla: string | HSLA): CssColorConverter {
+    public hsla(hsla: string | HSLA): TsColorConverter {
         if (typeof hsla === 'string') {
             return this.hsba(hsla);
         }
