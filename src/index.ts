@@ -28,7 +28,10 @@ export type ColorType = 'HEX' | 'RGB' | 'RGBA' | 'HSB' | 'HSBA' | 'HSL' | 'HSLA'
 
 export default class TsColorConverter {
     private rgbaColor?: RGBA;
-    public to(type: ColorType, returnAsString = true) {
+    public to(
+        type: ColorType,
+        returnAsString = true
+    ): string | RGB | RGBA | HSB | HSBA | HSL | HSLA | undefined {
         if (!this.rgbaColor) {
             throw new Error('Color is not set');
         }
@@ -109,46 +112,14 @@ export default class TsColorConverter {
         this.rgbaColor = this.hexToRGBA(color);
         return this;
     }
-    private AlphaToHex(alpha: number) {
-        const hex: any = {
-            0: '00',
-            0.1: '1A',
-            0.2: '33',
-            0.3: '4D',
-            0.4: '66',
-            0.5: '80',
-            0.6: '99',
-            0.7: 'B3',
-            0.8: 'CC',
-            0.9: 'E6',
-            1: 'FF'
-        };
-        if (!hex[alpha]) return 'FF';
-        return hex[alpha];
-    }
-    private HexToAlpha(alphaHex: string) {
-        alphaHex = alphaHex.toUpperCase();
-        const hex: any = {
-            '00': 0,
-            '1A': 0.1,
-            '33': 0.2,
-            '4D': 0.3,
-            '66': 0.4,
-            '80': 0.5,
-            '99': 0.6,
-            B3: 0.7,
-            CC: 0.8,
-            E6: 0.9,
-            FF: 1
-        };
-        if (!hex[alphaHex]) return 1;
-        return hex[alphaHex];
-    }
     private RGBAToHex(rgba: RGBA) {
         const { r, g, b, a } = rgba;
         const hex = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
         if (a !== 1) {
-            const alpha = this.AlphaToHex(a);
+            let alpha = (Number(a.toFixed(1)) * 255).toString(16).slice(0, 2).toLocaleUpperCase();
+            if (alpha === '0') {
+                alpha = '00';
+            }
             return (hex + alpha).toLocaleUpperCase();
         }
         return hex.toUpperCase();
@@ -166,11 +137,11 @@ export default class TsColorConverter {
                 .join('');
         } else if (hex.length === 8) {
             const alphaHex = hex.slice(-2);
-            alpha = this.HexToAlpha(alphaHex);
+            alpha = Number((parseInt(alphaHex, 16) / 255).toFixed(1));
             hex = hex.slice(0, -2);
         } else if (hex.length === 4) {
             const alphaHex = hex.slice(-1);
-            alpha = this.HexToAlpha(alphaHex + alphaHex);
+            alpha = Number((parseInt(alphaHex + alphaHex, 16) / 255).toFixed(1));
             hex = hex
                 .slice(0, -1)
                 .split('')

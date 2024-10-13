@@ -42,8 +42,6 @@ export default class TsColorConverter {
     rgba(rgba: string | RGBA): TsColorConverter;
     private RGBAToRGBA;
     hex(color: string): TsColorConverter;
-    private AlphaToHex;
-    private HexToAlpha;
     private RGBAToHex;
     private hexToRGBA;
     hsb(hsb: string | HSB): TsColorConverter;

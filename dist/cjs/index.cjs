@@ -121,48 +121,14 @@ var TsColorConverter = (function () {
         this.rgbaColor = this.hexToRGBA(color);
         return this;
     };
-    TsColorConverter.prototype.AlphaToHex = function (alpha) {
-        var hex = {
-            0: '00',
-            0.1: '1A',
-            0.2: '33',
-            0.3: '4D',
-            0.4: '66',
-            0.5: '80',
-            0.6: '99',
-            0.7: 'B3',
-            0.8: 'CC',
-            0.9: 'E6',
-            1: 'FF'
-        };
-        if (!hex[alpha])
-            return 'FF';
-        return hex[alpha];
-    };
-    TsColorConverter.prototype.HexToAlpha = function (alphaHex) {
-        alphaHex = alphaHex.toUpperCase();
-        var hex = {
-            '00': 0,
-            '1A': 0.1,
-            '33': 0.2,
-            '4D': 0.3,
-            '66': 0.4,
-            '80': 0.5,
-            '99': 0.6,
-            B3: 0.7,
-            CC: 0.8,
-            E6: 0.9,
-            FF: 1
-        };
-        if (!hex[alphaHex])
-            return 1;
-        return hex[alphaHex];
-    };
     TsColorConverter.prototype.RGBAToHex = function (rgba) {
         var r = rgba.r, g = rgba.g, b = rgba.b, a = rgba.a;
         var hex = "#".concat(((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1));
         if (a !== 1) {
-            var alpha = this.AlphaToHex(a);
+            var alpha = (Number(a.toFixed(1)) * 255).toString(16).slice(0, 2).toLocaleUpperCase();
+            if (alpha === '0') {
+                alpha = '00';
+            }
             return (hex + alpha).toLocaleUpperCase();
         }
         return hex.toUpperCase();
@@ -181,12 +147,12 @@ var TsColorConverter = (function () {
         }
         else if (hex.length === 8) {
             var alphaHex = hex.slice(-2);
-            alpha = this.HexToAlpha(alphaHex);
+            alpha = Number((parseInt(alphaHex, 16) / 255).toFixed(1));
             hex = hex.slice(0, -2);
         }
         else if (hex.length === 4) {
             var alphaHex = hex.slice(-1);
-            alpha = this.HexToAlpha(alphaHex + alphaHex);
+            alpha = Number((parseInt(alphaHex + alphaHex, 16) / 255).toFixed(1));
             hex = hex
                 .slice(0, -1)
                 .split('')
