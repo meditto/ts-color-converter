@@ -26,8 +26,18 @@ interface HSLA extends HSL {
 }
 export type ColorType = 'HEX' | 'RGB' | 'RGBA' | 'HSB' | 'HSBA' | 'HSL' | 'HSLA';
 
+/**
+ * TsColorConverter class provides methods to convert colors between different formats.
+ */
 export default class TsColorConverter {
     private rgbaColor?: RGBA;
+    /**
+     * Converts the current color to the specified type.
+     * @param type - The type to convert the color to.
+     * @param returnAsString - Whether to return the result as a string.
+     * @returns The converted color.
+     * @throws Error if the color is not set or the type is invalid.
+     */
     public to(
         type: ColorType,
         returnAsString = true
@@ -54,7 +64,12 @@ export default class TsColorConverter {
                 throw new Error('Invalid color type');
         }
     }
-    /* ------ RGB / RGBA ------ */
+    /**
+     * Sets the current color using an RGB value.
+     * @param rgb - The RGB value as a string or an object.
+     * @returns The TsColorConverter instance.
+     * @throws Error if the RGB value is invalid.
+     */
     public rgb(rgb: string | RGB): TsColorConverter {
         if (typeof rgb === 'string') {
             try {
@@ -77,6 +92,12 @@ export default class TsColorConverter {
         }
         return this;
     }
+    /**
+     * Sets the current color using an RGBA value.
+     * @param rgba - The RGBA value as a string or an object.
+     * @returns The TsColorConverter instance.
+     * @throws Error if the RGBA value is invalid.
+     */
     public rgba(rgba: string | RGBA): TsColorConverter {
         if (typeof rgba === 'string') {
             try {
@@ -100,6 +121,13 @@ export default class TsColorConverter {
         }
         return this;
     }
+    /**
+     * Converts an RGBA value to an RGB or RGBA value.
+     * @param rgba - The RGBA value.
+     * @param alpha - Whether to include the alpha channel.
+     * @param returnAsString - Whether to return the result as a string.
+     * @returns The converted color.
+     */
     private RGBAToRGBA(rgba: RGBA, alpha: boolean, returnAsString: boolean) {
         const { r, g, b, a } = rgba;
         if (alpha) {
@@ -107,11 +135,21 @@ export default class TsColorConverter {
         }
         return returnAsString ? `rgb(${r}, ${g}, ${b})` : { r, g, b };
     }
-    /* ------ HEX ------ */
+    /**
+     * Sets the current color using a HEX value.
+     * @param color - The HEX value.
+     * @returns The TsColorConverter instance.
+     * @throws Error if the HEX value is invalid.
+     */
     public hex(color: string): TsColorConverter {
         this.rgbaColor = this.hexToRGBA(color);
         return this;
     }
+    /**
+     * Converts an RGBA value to a HEX value.
+     * @param rgba - The RGBA value.
+     * @returns The HEX value.
+     */
     private RGBAToHex(rgba: RGBA) {
         const { r, g, b, a } = rgba;
         const hex = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
@@ -124,6 +162,12 @@ export default class TsColorConverter {
         }
         return hex.toUpperCase();
     }
+    /**
+     * Converts a HEX value to an RGBA value.
+     * @param hex - The HEX value.
+     * @returns The RGBA value.
+     * @throws Error if the HEX value is invalid.
+     */
     private hexToRGBA(hex: string): RGBA {
         if (!/^#([A-Fa-f0-9]{3}){1,2}(([A-Fa-f0-9]){1,2})?$/.test(hex)) {
             throw new Error('Invalid hex color');
@@ -152,7 +196,13 @@ export default class TsColorConverter {
         // @ts-ignore
         return { r: (hex >> 16) & 255, g: (hex >> 8) & 255, b: hex & 255, a: alpha };
     }
-    /* ------ HSLA/HSLA ------ */
+
+    /**
+     * Sets the current color using an HSB value.
+     * @param hsb - The HSB value as a string or an object.
+     * @returns The TsColorConverter instance.
+     * @throws Error if the HSB value is invalid.
+     */
     public hsb(hsb: string | HSB): TsColorConverter {
         if (typeof hsb === 'string') {
             try {
@@ -174,6 +224,12 @@ export default class TsColorConverter {
         }
         return this;
     }
+    /**
+     * Sets the current color using an HSL value.
+     * @param hsl - The HSL value as a string or an object.
+     * @returns The TsColorConverter instance.
+     * @throws Error if the HSL value is invalid.
+     */
     public hsl(hsl: string | HSL): TsColorConverter {
         if (typeof hsl === 'string') {
             return this.hsb(hsl);
@@ -181,6 +237,12 @@ export default class TsColorConverter {
         const { h, s, l } = hsl;
         return this.hsb({ h, s, b: l });
     }
+    /**
+     * Sets the current color using an HSBA value.
+     * @param hsba - The HSBA value as a string or an object.
+     * @returns The TsColorConverter instance.
+     * @throws Error if the HSBA value is invalid.
+     */
     public hsba(hsba: string | HSBA): TsColorConverter {
         if (typeof hsba === 'string') {
             try {
@@ -203,6 +265,12 @@ export default class TsColorConverter {
         }
         return this;
     }
+    /**
+     * Sets the current color using an HSLA value.
+     * @param hsla - The HSLA value as a string or an object.
+     * @returns The TsColorConverter instance.
+     * @throws Error if the HSLA value is invalid.
+     */
     public hsla(hsla: string | HSLA): TsColorConverter {
         if (typeof hsla === 'string') {
             return this.hsba(hsla);
@@ -210,6 +278,12 @@ export default class TsColorConverter {
         const { h, s, l, a } = hsla;
         return this.hsba({ h, s, b: l, a });
     }
+    /**
+     * Converts an HSBA value to an RGBA value.
+     * @param hsba - The HSBA value.
+     * @returns The RGBA value.
+     * @throws Error if the HSBA value is invalid.
+     */
     private HSBAtoRGBA(hsba: HSBA): RGBA {
         // source https://www.baeldung.com/cs/convert-color-hsl-rgb
         const hue = new Decimal(hsba.h);
@@ -234,7 +308,14 @@ export default class TsColorConverter {
         const [r, g, b] = range[2].map((v) => v.plus(m).times(255).round().toNumber());
         return { r, g, b, a: hsba.a };
     }
-    // TODO: Refactor to use Decimal.js
+    /**
+     * Converts an RGBA value to an HSBA or HSLA value.
+     * @param rgba - The RGBA value.
+     * @param alpha - Whether to include the alpha channel.
+     * @param returnAsString - Whether to return the result as a string.
+     * @param hsl - Whether to convert to HSL instead of HSB.
+     * @returns The converted color.
+     */
     private RGBAToHSBA(rgba: RGBA, alpha: boolean, returnAsString: boolean, hsl: boolean = false) {
         const r = new Decimal(rgba.r).div(255);
         const g = new Decimal(rgba.g).div(255);
@@ -282,6 +363,13 @@ export default class TsColorConverter {
               };
         return this.ReturnStringOrObject(value, alpha, returnAsString);
     }
+    /**
+     * Parses a color string to extract its components.
+     * @param type - The type of the color (e.g., 'rgb', 'rgba', 'hsl', 'hsla').
+     * @param color - The color string.
+     * @returns The extracted components.
+     * @throws Error if the color string is invalid.
+     */
     private ParseStringColor(type: 'rgb' | 'rgba' | 'hsl' | 'hsla', color: string) {
         const lengths = {
             rgb: 3,
@@ -303,9 +391,23 @@ export default class TsColorConverter {
         }
         return values;
     }
+    /**
+     * Checks if a Decimal value is within a specified range.
+     * @param value - The Decimal value.
+     * @param min - The minimum value.
+     * @param max - The maximum value.
+     * @returns Whether the value is within the range.
+     */
     private DecimalInRange(value: Decimal, min: number, max: number) {
         return value.gte(min) && value.lte(max);
     }
+    /**
+     * Returns the color value as a string or an object.
+     * @param value - The color value.
+     * @param alpha - Whether to include the alpha channel.
+     * @param returnAsString - Whether to return the result as a string.
+     * @returns The color value as a string or an object.
+     */
     private ReturnStringOrObject(
         value: HSBA | RGBA | HSLA,
         alpha: boolean,
@@ -344,6 +446,13 @@ export default class TsColorConverter {
                 return `hsla(${hsla.h}, ${hsla.s}%, ${hsla.l}%, ${hsla.a})`;
         }
     }
+    /**
+     * Checks if a number is within a specified range.
+     * @param value - The number.
+     * @param min - The minimum value.
+     * @param max - The maximum value.
+     * @returns Whether the number is within the range.
+     */
     private inRange(value: number, min: number, max: number) {
         return value >= min && value <= max;
     }
